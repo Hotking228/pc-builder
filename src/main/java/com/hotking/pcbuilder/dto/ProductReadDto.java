@@ -17,6 +17,6 @@ public class ProductReadDto {
 
     String manufacturer;
 
-    ProductCategoryDto category;
+    CategoryDto category;
 
 }

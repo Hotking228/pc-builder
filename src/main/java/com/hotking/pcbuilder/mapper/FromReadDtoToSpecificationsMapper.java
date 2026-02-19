@@ -1,17 +1,17 @@
 package com.hotking.pcbuilder.mapper;
 
 import com.hotking.pcbuilder.dto.SpecificationReadDto;
-import com.hotking.pcbuilder.entity.ProductSpecification;
+import com.hotking.pcbuilder.entity.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
+
 @Component
-public class FromSpecificationsReadDtoToSpecifications implements Mapper<List<SpecificationReadDto>, List<ProductSpecification>> {
+public class FromReadDtoToSpecificationsMapper implements Mapper<List<SpecificationReadDto>, List<Specification>> {
     @Override
-    public List<ProductSpecification> map(List<SpecificationReadDto> object) {
+    public List<Specification> map(List<SpecificationReadDto> object) {
         return object.stream()
-                .map(dto -> ProductSpecification.builder()
+                .map(dto -> Specification.builder()
                         .specKey(dto.getSpecKey())
                         .specValue(dto.getSpecValue())
                         .build())

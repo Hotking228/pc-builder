@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class FromProductToProductReadDtoMapper implements Mapper<Product, ProductReadDto> {
+public class FromProductToReadDtoMapper implements Mapper<Product, ProductReadDto> {
 
-    private final FromCategoryToCategoryDtoMapper categoryMapper;
+    private final FromCategoryToDtoMapper categoryMapper;
 
     @Override
     public ProductReadDto map(Product object) {

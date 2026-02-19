@@ -28,10 +28,10 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private ProductCategory category;
+    private Category category;
 
     private String manufacturer;
 
     @OneToMany(mappedBy = "product")
-    private List<ProductSpecification> specifications;
+    private List<Specification> specifications;
 }

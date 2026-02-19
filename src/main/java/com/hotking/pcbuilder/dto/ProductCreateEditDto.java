@@ -13,7 +13,7 @@ public class ProductCreateEditDto {
 
     Float price;
 
-    ProductCategoryDto category;
+    CategoryDto category;
 
     String manufacturer;
 

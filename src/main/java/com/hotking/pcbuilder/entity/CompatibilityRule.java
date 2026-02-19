@@ -17,11 +17,11 @@ public class CompatibilityRule {
 
     @ManyToOne
     @JoinColumn(name = "source_category_id")
-    private ProductCategory sourceCategory;
+    private Category sourceCategory;
 
     @ManyToOne
     @JoinColumn(name = "target_category_id")
-    private ProductCategory targetCategory;
+    private Category targetCategory;
 
     private String sourceSpecKey;
 

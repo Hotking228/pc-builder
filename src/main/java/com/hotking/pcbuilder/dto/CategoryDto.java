@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ProductCategoryDto {
+public class CategoryDto {
 
     String name;
 

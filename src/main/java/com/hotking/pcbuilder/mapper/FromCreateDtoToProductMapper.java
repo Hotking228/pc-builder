@@ -7,10 +7,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class FromCreateProductDtoToProductMapper implements Mapper<ProductCreateEditDto, Product>{
+public class FromCreateDtoToProductMapper implements Mapper<ProductCreateEditDto, Product>{
 
-    private final FromCategoryDtoToCategoryMapper categoryMapper;
-    private final FromSpecificationsReadDtoToSpecifications specMapper;
+    private final FromDtoToCategoryMapper categoryMapper;
+    private final FromReadDtoToSpecificationsMapper specMapper;
+
+    @Override
+    public Product map(ProductCreateEditDto dto, Product entity){
+        return Product.builder()
+                .name(dto.getName())
+                .vendorCode(dto.getVendorCode())
+                .price(dto.getPrice())
+                .category(categoryMapper.map(dto.getCategory()))
+                .manufacturer(dto.getManufacturer())
+                .specifications(specMapper.map(dto.getSpecifications()))
+                .id(entity.getId())
+                .build();
+    }
 
     @Override
     public Product map(ProductCreateEditDto object) {

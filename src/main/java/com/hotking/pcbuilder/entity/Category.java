@@ -6,22 +6,27 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
-public class ProductSpecification {
+@Table(name = "product_category")
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    private String name;
 
-    private String specKey;
+    private String slug;
 
-    private String specValue;
+    @Column(length = 5000)
+    private String description;
+
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 }
