@@ -16,9 +16,9 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class CategoryService {
 
-    CategoryRepository categoryRepository;
-    FromCategoryToDtoMapper categoryMapper;
-    FromDtoToCategoryMapper dtoMapper;
+    private final CategoryRepository categoryRepository;
+    private final FromCategoryToDtoMapper categoryMapper;
+    private final FromDtoToCategoryMapper dtoMapper;
 
     @Transactional
     public Optional<CategoryDto> create(CategoryDto categoryDto){
@@ -40,11 +40,12 @@ public class CategoryService {
 
     public List<CategoryDto> findAll(){
         return categoryRepository.findAll().stream()
-                .map(entity -> categoryMapper.map(entity))
+                .map(categoryMapper::map)
                 .toList();
     }
 
     public Optional<CategoryDto> findById(Long id){
+        //TODO: добавить исключение
         return Optional.ofNullable(
                 categoryMapper.map(
                         categoryRepository.findById(id).orElseThrow()

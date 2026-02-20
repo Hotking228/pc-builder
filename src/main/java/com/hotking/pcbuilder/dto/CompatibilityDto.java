@@ -1,7 +1,6 @@
 package com.hotking.pcbuilder.dto;
 
-import com.hotking.pcbuilder.entity.Category;
-import com.hotking.pcbuilder.entity.Operator;
+import com.hotking.pcbuilder.enums.Operator;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;

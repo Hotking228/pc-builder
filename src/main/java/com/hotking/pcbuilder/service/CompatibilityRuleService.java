@@ -46,6 +46,7 @@ public class CompatibilityRuleService {
     }
 
     public Optional<CompatibilityDto> findById(Long id){
+        //TODO: добавить исключение
         return Optional.ofNullable(
                 compatibilityMapper.map(
                         compatibilityRepository.findById(id).orElseThrow()

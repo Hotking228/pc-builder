@@ -28,6 +28,7 @@ public class SpecificationService {
     }
 
     public Optional<SpecificationReadDto> findById(Long id){
+        //TODO: добавить исключение
         return Optional.of(
                 specificationRepository.findById(id)
                         .map(specMapper::map)

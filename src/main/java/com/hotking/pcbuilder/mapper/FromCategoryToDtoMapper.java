@@ -9,6 +9,7 @@ public class FromCategoryToDtoMapper implements Mapper<Category, CategoryDto>{
     @Override
     public CategoryDto map(Category object) {
         return CategoryDto.builder()
+                .id(object.getId())
                 .name(object.getName())
                 .slug(object.getSlug())
                 .description(object.getDescription())

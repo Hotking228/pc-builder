@@ -7,6 +7,8 @@ import lombok.Data;
 @Builder
 public class CategoryDto {
 
+    Long id;
+
     String name;
 
     String slug;

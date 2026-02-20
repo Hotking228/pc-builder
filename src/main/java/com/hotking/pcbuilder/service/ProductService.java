@@ -2,6 +2,7 @@ package com.hotking.pcbuilder.service;
 
 import com.hotking.pcbuilder.dto.ProductCreateEditDto;
 import com.hotking.pcbuilder.dto.ProductReadDto;
+import com.hotking.pcbuilder.entity.Product;
 import com.hotking.pcbuilder.mapper.FromCreateDtoToProductMapper;
 import com.hotking.pcbuilder.mapper.FromProductToReadDtoMapper;
 import com.hotking.pcbuilder.repository.ProductRepository;
@@ -18,8 +19,8 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    FromCreateDtoToProductMapper productCreateMapper;
-    FromProductToReadDtoMapper productReadDtoMapper;
+    private final FromCreateDtoToProductMapper productCreateMapper;
+    private final FromProductToReadDtoMapper productReadDtoMapper;
 
     @Transactional
     public Optional<ProductReadDto> create(ProductCreateEditDto product){
@@ -41,16 +42,22 @@ public class ProductService {
 
     public List<ProductReadDto> findAll(){
         return productRepository.findAll().stream()
-                .map(entity -> productReadDtoMapper.map(entity))
+                .map(productReadDtoMapper::map)
                 .toList();
     }
 
     public Optional<ProductReadDto> findById(Long id){
+        //TODO: добавить исключение
         return Optional.ofNullable(
                 productReadDtoMapper.map(
                         productRepository.findById(id).orElseThrow()
                 )
         );
+    }
+
+    public Product findByIdEntity(Long id){
+        //TODO: добавить исключение
+        return productRepository.findById(id).orElseThrow();
     }
 
     @Transactional
@@ -59,5 +66,9 @@ public class ProductService {
         if(entity.isEmpty()) return false;
         productRepository.deleteById(id);
         return true;
+    }
+
+    public List<Product> findAllBySlug(String slug){
+        return productRepository.findAllBySlug(slug);
     }
 }

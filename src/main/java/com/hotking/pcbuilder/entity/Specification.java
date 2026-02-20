@@ -1,16 +1,16 @@
 package com.hotking.pcbuilder.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
+@Table(name = "product_specification")
+@ToString(exclude = {"product"})
+@EqualsAndHashCode(exclude = {"product"})
 public class Specification {
 
     @Id

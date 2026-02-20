@@ -1,5 +1,6 @@
 package com.hotking.pcbuilder.entity;
 
+import com.hotking.pcbuilder.enums.Operator;
 import jakarta.persistence.*;
 import lombok.*;
 

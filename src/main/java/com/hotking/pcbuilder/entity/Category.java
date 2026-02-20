@@ -1,10 +1,7 @@
 package com.hotking.pcbuilder.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,6 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "product_category")
+@ToString(exclude = {"products"})
+@EqualsAndHashCode(exclude = {"products"})
 public class Category {
 
     @Id
