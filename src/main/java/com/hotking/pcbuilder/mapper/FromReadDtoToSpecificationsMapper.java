@@ -4,18 +4,24 @@ import com.hotking.pcbuilder.dto.SpecificationReadDto;
 import com.hotking.pcbuilder.entity.Specification;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
-public class FromReadDtoToSpecificationsMapper implements Mapper<List<SpecificationReadDto>, List<Specification>> {
+public class FromReadDtoToSpecificationsMapper implements Mapper<List<SpecificationReadDto>, Map<String, Specification>> {
     @Override
-    public List<Specification> map(List<SpecificationReadDto> object) {
-        return object.stream()
-                .map(dto -> Specification.builder()
-                        .specKey(dto.getSpecKey())
-                        .specValue(dto.getSpecValue())
-                        .build())
-                .toList();
+    public Map<String, Specification> map(List<SpecificationReadDto> object) {
+        Map<String, Specification> map = new HashMap<>();
+        for(int i= 0; i < object.size(); i++){
+            map.put(object.get(i).getSpecKey(), Specification.builder()
+                    .specKey(object.get(i).getSpecKey())
+                    .specValue(object.get(i).getSpecValue())
+                    .build());
+        }
+
+
+        return map;
 
     }
 }
