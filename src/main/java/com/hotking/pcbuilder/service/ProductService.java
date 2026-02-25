@@ -56,8 +56,9 @@ public class ProductService {
     }
 
     public Product findByIdEntity(Long id){
+
         //TODO: добавить исключение
-        return productRepository.findById(id).orElseThrow();
+        return productRepository.findByIdWithAllDepends(id).orElseThrow();
     }
 
     @Transactional

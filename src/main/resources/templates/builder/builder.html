@@ -6,7 +6,7 @@
     </head>
 
     <body>
-        <div th:each="component : ${build}" th:text="|Название: ${component.name} Цена: ${component.price}|">Добавленное комплектующее</div>
+        <div th:each="component : ${build.get()}" th:text="|Название: ${component.name} Цена: ${component.price}|">Добавленное комплектующее</div>
         <br>
         <br>
         <div th:each="category : ${categories}">

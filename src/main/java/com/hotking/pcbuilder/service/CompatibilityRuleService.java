@@ -2,6 +2,8 @@ package com.hotking.pcbuilder.service;
 
 import com.hotking.pcbuilder.dto.CategoryDto;
 import com.hotking.pcbuilder.dto.CompatibilityDto;
+import com.hotking.pcbuilder.entity.Category;
+import com.hotking.pcbuilder.entity.CompatibilityRule;
 import com.hotking.pcbuilder.mapper.FromCompatibiltyToDtoMapper;
 import com.hotking.pcbuilder.mapper.FromDtoToCompatibilityMapper;
 import com.hotking.pcbuilder.repository.CompatibilityRepository;
@@ -60,5 +62,9 @@ public class CompatibilityRuleService {
         if(entity.isEmpty()) return false;
         compatibilityRepository.deleteById(id);
         return true;
+    }
+
+    public List<CompatibilityRule> findAllByCategories(Category category1, Category category2) {
+        return compatibilityRepository.findAllByCategories(category1, category2);
     }
 }

@@ -3,6 +3,7 @@ package com.hotking.pcbuilder.controller;
 import com.hotking.pcbuilder.entity.Product;
 import com.hotking.pcbuilder.service.CategoryService;
 import com.hotking.pcbuilder.service.ProductService;
+import com.hotking.pcbuilder.validation.PcBuild;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,14 +20,14 @@ public class PcBuilder {
 
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final PcBuild build;
 
     @GetMapping
     public String showBuild(
-                            Model model,
-                            @SessionAttribute(value = "build", required = false) List<Product> components){
-        if(components == null) {
-            components = new ArrayList<>();
-            model.addAttribute("build", components);
+            Model model){
+
+        if(model.getAttribute("build") == null) {
+            model.addAttribute("build", build);
         }
 
         model.addAttribute("categories", categoryService.findAll());
@@ -46,13 +47,12 @@ public class PcBuilder {
 
     @PostMapping
     public String addComponentToBuild(Model model,
-                                      @ModelAttribute("component") Long id,
-                                      @SessionAttribute(value = "build", required = false) List<Product> components){
-        if(components == null) {
-            components = new ArrayList<>();
-            model.addAttribute("build", components);
+                                      @ModelAttribute("component") Long id){
+        if(model.getAttribute("build") == null) {
+            model.addAttribute("build", build);
         }
-        components.add(productService.findByIdEntity(id));
+        build.addComponent(productService.findByIdEntity(id));
+
 
         return "redirect:/builder";
     }
