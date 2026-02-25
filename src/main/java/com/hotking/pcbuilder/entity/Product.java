@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Data
@@ -34,5 +35,6 @@ public class Product {
     private String manufacturer;
 
     @OneToMany(mappedBy = "product")
-    private List<Specification> specifications;
+    @MapKey(name = "specKey")
+    private Map<String, Specification> specifications;
 }

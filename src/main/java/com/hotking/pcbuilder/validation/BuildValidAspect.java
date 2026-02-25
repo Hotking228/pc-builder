@@ -19,7 +19,6 @@ import java.util.Set;
 public class BuildValidAspect {
 
     private final Validator validator;
-    private final PcBuild build;
 
     @Pointcut("execution(* com.hotking.pcbuilder.validation.PcBuild.addComponent(*))")
     public void addComponentCheck(){
@@ -33,9 +32,7 @@ public class BuildValidAspect {
         Set<ConstraintViolation<PcBuild>> violations = validator.validate(build);
 
         if(!violations.isEmpty()) {
-            for (ConstraintViolation<PcBuild> violation : violations) {
-                build.removeLastComponent();
-            }
+            build.removeLastComponent();
         }
     }
 }

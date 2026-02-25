@@ -1,6 +1,5 @@
 package com.hotking.pcbuilder.validation;
 
-
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -9,12 +8,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+@Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
 @Constraint(validatedBy = BuildCompletenessValidator.class)
 public @interface Build {
 
-    String message() default "Имя или фамилия должны быть введены!";
+    String message() default "Несовпадение комплектующих!";
 
     Class<?>[] groups() default { };
 

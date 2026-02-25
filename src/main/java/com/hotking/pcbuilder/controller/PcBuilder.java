@@ -40,7 +40,10 @@ public class PcBuilder {
     public String selectComponent(
                                   Model model,
                                   @PathVariable("slug") String slug){
-        model.addAttribute("components", productService.findAllBySlug(slug));
+        model.addAttribute("components", productService.findAllBySlug(slug)
+                .stream()
+                .filter(build::validateComponent)
+                .toList());
 
         return "/builder/components";
     }
