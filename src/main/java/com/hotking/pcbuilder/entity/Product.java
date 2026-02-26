@@ -34,6 +34,7 @@ public class Product {
 
     private String manufacturer;
 
+    //Ключ - ключ спецификации из таблицы Specification, значение - эта же спецификация
     @OneToMany(mappedBy = "product")
     @MapKey(name = "specKey")
     private Map<String, Specification> specifications;

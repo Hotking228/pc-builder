@@ -7,7 +7,7 @@
 
     <body>
         <div th:each="component : ${components}">
-            <a th:href="@{'/builder/' + ${component.id}}" th:text="${component.name}"></a>
+            <a th:href="@{'/builder/component/' + ${component.id}}" th:text="${component.name}"></a>
             <form action="/builder" method="post">
                 <input type="hidden" th:value="${component.id}" name="component">
                 <button type="submit">Добавить</button>

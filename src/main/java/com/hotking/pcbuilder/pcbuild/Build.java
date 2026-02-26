@@ -1,4 +1,4 @@
-package com.hotking.pcbuilder.validation;
+package com.hotking.pcbuilder.pcbuild;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

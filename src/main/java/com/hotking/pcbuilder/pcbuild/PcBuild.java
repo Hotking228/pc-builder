@@ -1,9 +1,7 @@
-package com.hotking.pcbuilder.validation;
+package com.hotking.pcbuilder.pcbuild;
 
 import com.hotking.pcbuilder.entity.Product;
-import com.hotking.pcbuilder.entity.Specification;
 import com.hotking.pcbuilder.service.ProductService;
-import com.hotking.pcbuilder.service.SpecificationService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,6 +14,8 @@ import java.util.*;
 public class PcBuild {
 
     private Map<Long, Integer> build = new LinkedHashMap<>();
+    @Getter
+    Long lastAdded = -1L;
     private final BuildCompletenessValidator validator;
     private final ProductService productService;
 
@@ -23,13 +23,14 @@ public class PcBuild {
         build.putIfAbsent(product.getId(), 0);
         build.put(product.getId(), build.get(product.getId()) + 1);
         boolean valid = validator.isValid(this, product);
-        removeLastComponent();
+        removeComponent(product.getId());
         return valid;
     }
 
 
     public PcBuild addComponent(Product product){
         build.putIfAbsent(product.getId(), 0);
+        lastAdded = product.getId();
         build.put(product.getId(), build.get(product.getId()) + 1);
 
         return this;

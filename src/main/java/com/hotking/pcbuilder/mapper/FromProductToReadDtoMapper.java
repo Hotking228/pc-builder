@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class FromProductToReadDtoMapper implements Mapper<Product, ProductReadDto> {
 
     private final FromCategoryToDtoMapper categoryMapper;
+    private final FromSpecificationToReadDtoMapper specMapper;
 
     @Override
     public ProductReadDto map(Product object) {
@@ -18,6 +19,9 @@ public class FromProductToReadDtoMapper implements Mapper<Product, ProductReadDt
                 .name(object.getName())
                 .manufacturer(object.getManufacturer())
                 .category(categoryMapper.map(object.getCategory()))
+                .specifications(object.getSpecifications().values().stream()
+                        .map(specMapper::map)
+                        .toList())
                 .build();
 
     }

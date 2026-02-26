@@ -34,7 +34,27 @@ INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
 (3, 'max_memory', '128'),
 (3, 'pcie_version', '5.0'),
 (3, 'wifi', 'true'),
-(3, 'm2_slots', '4');
+(3, 'm2_slots_count', '4');
+
+INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
+(3, 'max_memory_speed', '5600'),
+(4, 'max_memory_speed', '5600'),
+(5, 'max_memory_speed', '2666');
+
+INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
+(3, 'm2_slots_available', 'true'),
+(4, 'm2_slots_available', 'false'),
+(5, 'm2_slots_available', 'true');
+
+INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
+(3, 'memory_form_factor', 'M2, 3.5"'),
+(4, 'memory_form_factor', 'M2, 3.5"'),
+(5, 'memory_form_factor', '3.5"');
+
+INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
+(3, 'memory_interface', 'SATA, NVMe'),
+(4, 'memory_interface', 'SATA, NVMe'),
+(5, 'memory_interface', 'SATA');
 
 -- MSI MAG B650 TOMAHAWK (id=4)
 INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
@@ -46,7 +66,7 @@ INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
 (4, 'max_memory', '128'),
 (4, 'pcie_version', '4.0'),
 (4, 'wifi', 'true'),
-(4, 'm2_slots', '3');
+(4, 'm2_slots_count', '3');
 
 -- Gigabyte B760M DS3H (id=5)
 INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
@@ -58,7 +78,7 @@ INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
 (5, 'max_memory', '64'),
 (5, 'pcie_version', '4.0'),
 (5, 'wifi', 'false'),
-(5, 'm2_slots', '2');
+(5, 'm2_slots_count', '2');
 
 -- ХАРАКТЕРИСТИКИ ДЛЯ ОПЕРАТИВНОЙ ПАМЯТИ
 -- Kingston Fury Beast DDR5 32GB (id=6)
@@ -126,8 +146,8 @@ INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
 -- Samsung 980 Pro 1TB (id=12)
 INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
 (12, 'type', 'SSD'),
-(12, 'form_factor', 'M.2 2280'),
-(12, 'interface', 'NVMe PCIe 4.0'),
+(12, 'form_factor', 'M.2'),
+(12, 'interface', 'NVMe'),
 (12, 'capacity', '1024'),
 (12, 'read_speed', '7000'),
 (12, 'write_speed', '5000'),
@@ -136,8 +156,8 @@ INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
 -- WD Blue SN580 2TB (id=13)
 INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
 (13, 'type', 'SSD'),
-(13, 'form_factor', 'M.2 2280'),
-(13, 'interface', 'NVMe PCIe 4.0'),
+(13, 'form_factor', 'M.2'),
+(13, 'interface', 'NVMe'),
 (13, 'capacity', '2048'),
 (13, 'read_speed', '4150'),
 (13, 'write_speed', '4150'),
@@ -147,10 +167,15 @@ INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
 INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
 (14, 'type', 'HDD'),
 (14, 'form_factor', '3.5"'),
-(14, 'interface', 'SATA III'),
+(14, 'interface', 'SATA'),
 (14, 'capacity', '4000'),
 (14, 'rpm', '5400'),
 (14, 'cache', '256');
+
+INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
+(12, 'm2_slots_available', ''),
+(13, 'm2_slots_available', ''),
+(14, 'm2_slots_available', '');
 
 -- ХАРАКТЕРИСТИКИ ДЛЯ БЛОКОВ ПИТАНИЯ
 -- be quiet! Dark Power 13 1000W (id=15)

@@ -6,8 +6,14 @@
     </head>
 
     <body>
-        <div th:each="component : ${build.get()}" th:text="|Название: ${component.name} Цена: ${component.price}|">Добавленное комплектующее</div>
+    <div th:each="component : ${build.get()}">
+
+        <div th:text="|Название: ${component.name} Цена: ${component.price}|">Добавленное комплектующее</div>
+        <form  th:action="@{'/builder/remove/' + ${component.getId()}}" method="post">
+            <button type="submit">Убрать</button>
+        </form>
         <br>
+    </div>
         <br>
         <div th:each="category : ${categories}">
             <a th:href="@{'/builder/select/' + ${category.slug}}" th:text="|Добавить ${category.name}|">Добавить категорию</a>

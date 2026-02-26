@@ -1,15 +1,13 @@
-package com.hotking.pcbuilder.validation;
+package com.hotking.pcbuilder.pcbuild;
 
 import jakarta.validation.ConstraintViolation;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import jakarta.validation.Validator;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.Set;
 
@@ -20,7 +18,7 @@ public class BuildValidAspect {
 
     private final Validator validator;
 
-    @Pointcut("execution(* com.hotking.pcbuilder.validation.PcBuild.addComponent(*))")
+    @Pointcut("execution(* com.hotking.pcbuilder.pcbuild.PcBuild.addComponent(*))")
     public void addComponentCheck(){
 
     }

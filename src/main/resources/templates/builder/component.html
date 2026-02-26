@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <title>Component</title>
     </head>
 
     <body>
-
+        <div th:text="${component.getName()}">Название компонента</div><br>
+        <div th:text="${component.getManufacturer()}">Производитель</div><br>
+        <div th:text="${component.getPrice()}">Цена</div><br>
+        <div th:text="|${component.getCategory().getName()} ${component.getCategory().getSlug()}|">Название категории</div><br>
+        <div th:text="${component.getCategory().getDescription()}">Описание</div><br>
+        Характеристики:<br>
+        <div th:each="spec : ${component.getSpecifications()}" th:text="|${spec.getSpecKey()}: ${spec.getSpecValue()}|">Характеристика</div><br>
     </body>
 </html>

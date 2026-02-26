@@ -1,16 +1,12 @@
 package com.hotking.pcbuilder.controller;
 
-import com.hotking.pcbuilder.entity.Product;
 import com.hotking.pcbuilder.service.CategoryService;
 import com.hotking.pcbuilder.service.ProductService;
-import com.hotking.pcbuilder.validation.PcBuild;
+import com.hotking.pcbuilder.pcbuild.PcBuild;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,8 +33,7 @@ public class PcBuilder {
     }
 
     @GetMapping("/select/{slug}")
-    public String selectComponent(
-                                  Model model,
+    public String selectComponent(Model model,
                                   @PathVariable("slug") String slug){
         model.addAttribute("components", productService.findAllBySlug(slug)
                 .stream()
@@ -46,6 +41,16 @@ public class PcBuilder {
                 .toList());
 
         return "/builder/components";
+    }
+
+    @GetMapping("/component/{componentId}")
+    public String getComponentInfo(Model model,
+                                   @PathVariable("componentId") Integer componentId){
+
+        //TODO: добавить исключение
+        model.addAttribute("component", productService.findById(componentId.longValue()).orElseThrow());
+
+        return "/builder/component";
     }
 
     @PostMapping
@@ -56,6 +61,14 @@ public class PcBuilder {
         }
         build.addComponent(productService.findByIdEntity(id));
 
+
+        return "redirect:/builder";
+    }
+
+    @PostMapping("/remove/{id}")
+    public String removeComponent(@PathVariable Integer id){
+
+        build.removeComponent(id.longValue());
 
         return "redirect:/builder";
     }
