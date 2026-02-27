@@ -56,6 +56,11 @@ INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
 (4, 'memory_interface', 'SATA, NVMe'),
 (5, 'memory_interface', 'SATA');
 
+INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
+(3, 'pcie_slots', 'USB, PCIe'),
+(4, 'pcie_slots', 'USB, PCIe'),
+(5, 'pcie_slots', 'USB');
+
 -- MSI MAG B650 TOMAHAWK (id=4)
 INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
 (4, 'socket', 'AM5'),
@@ -226,6 +231,11 @@ INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
 (20, 'max_gpu_length', '330'),
 (20, 'max_cooler_height', '160'),
 (20, 'included_fans', '2');
+
+INSERT INTO product_specification (product_id, spec_key, spec_value) VALUES
+(18, 'drive_bays_525', '5.25"'),
+(19, 'drive_bays_525', '9'),
+(20, 'drive_bays_525', '5.25"');
 
 -- ХАРАКТЕРИСТИКИ ДЛЯ КУЛЕРОВ
 -- Noctua NH-D15 (id=21)
