@@ -2,8 +2,9 @@ package com.hotking.pcbuilder.pcbuild;
 
 import com.hotking.pcbuilder.convertors.VersionConvertor;
 import com.hotking.pcbuilder.entity.*;
-import com.hotking.pcbuilder.service.CategoryLimitService;
+import com.hotking.pcbuilder.repository.port.PortRepository;
 import com.hotking.pcbuilder.service.CompatibilityRuleService;
+import com.hotking.pcbuilder.service.ConnectionRuleService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +20,12 @@ import java.util.stream.Collectors;
 public class BuildCompletenessValidator implements ConstraintValidator<Build, PcBuild> {
 
     private final CompatibilityRuleService compatibilityService;
-    private final CategoryLimitService limitService;
     private final VersionConvertor convertor;
+    private final ConnectionRuleService connectionRuleService;
+    private final PortRepository portRepository;
 
     public boolean isValid(PcBuild pcBuild, Product product){
-        if(validParameters(pcBuild, product)){
-            return true;
-        }
-
-        return false;
+        return validParameters(pcBuild, product) && lessThanMax(pcBuild, product);
     }
 
 
@@ -36,10 +34,14 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
     // Если у пользователя как то получилось добавить невалидный объект, мы его удалим через аспект
     public boolean isValid(PcBuild pcBuild, ConstraintValidatorContext constraintValidatorContext) {
         //TODO: добавить исключение
-        return validParameters(pcBuild, pcBuild.get().stream()
-                .filter(component -> component.getId() == pcBuild.getLastAdded())
-                .findFirst()
-                .orElseThrow());
+//        Product product = pcBuild.get().stream()
+//                .filter(component -> component.getId() == pcBuild.getLastAdded())
+//                .findFirst()
+//                .orElseThrow();
+//        return validParameters(pcBuild, product) &&
+//                lessThanMax(pcBuild, product);
+
+        return true;
     }
 
 
@@ -209,6 +211,17 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
         return true;
     }
 
+    private boolean lessThanMax(PcBuild build, Product product){
 
+        ConnectionRule rule = connectionRuleService.findBySourceCategory(product.getCategory().getId());
+        if(build.containsCategory(rule.getTargetCategory().getId())){
+            if(build.containsEmptySlots(rule.getPortName())){
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }
