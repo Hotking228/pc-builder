@@ -46,21 +46,28 @@ public class PcBuilder {
     @GetMapping("/select/{slug}")
     public String selectComponent(Model model,
                                   @PathVariable("slug") String slug,
-                                  @RequestParam(value = "sortOrder", required = false) SortOrder order,
-                                  @RequestParam(value = "pageNumber", required = false) Integer pageNumber){
+                                  @ModelAttribute("page") ProductPage page){
+        if(page == null){
+            page = new ProductPage();
+        }
+        if(page.getPageNum() == null){
+            page.setPageNum(pages.getDefaultPage());
+        }
+        if(page.getMinPrice() == null){
+            page.setMinPrice(0F);
+        }
+        if(page.getMaxPrice() == null){
+            page.setMaxPrice(1_000_000F);
+        }
 
-
-
-
-        productPage.setPageSize(pages.getPageSize());
-        productPage.setPageNum(pages.getDefaultPage());
-        productPage.setMaxPrice(100_000F);
-        productPage.setMinPrice(0F);
-
-
+        page.setPageSize(pages.getPageSize());
+        productPage.set(page);
 
         model.addAttribute("components", productService.findAllBySlug(slug));
-
+        model.addAttribute("slug", slug);
+        model.addAttribute("page", page);
+        model.addAttribute("pageCount", productPaginator.getSize() / pages.getPageSize() +
+                ((productPaginator.getSize() % pages.getPageSize() > 0 && productPaginator.getSize() > pages.getPageSize()) ? 1 : 0) - 1);
 
         return "/builder/components";
     }

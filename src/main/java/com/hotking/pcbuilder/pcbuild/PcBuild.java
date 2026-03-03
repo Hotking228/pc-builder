@@ -34,11 +34,11 @@ public class PcBuild {
     private final ConnectionRuleService connectionRuleService;
 
     public boolean containsCategory(Long id){
-        return categories.containsKey(id);
+        return categories.containsKey(id) && categories.get(id) > 0;
     }
 
     public boolean containsEmptySlots(String slotName){
-        return emptySlots.get(slotName) >= 0;
+        return emptySlots.containsKey(slotName) && emptySlots.get(slotName) >= 0;
     }
 
     public boolean validateComponent(Product product){
@@ -46,7 +46,8 @@ public class PcBuild {
         build.put(product.getId(), build.get(product.getId()) + 1);
         categories.putIfAbsent(product.getCategory().getId(), 0);
         categories.put(product.getCategory().getId(), categories.get(product.getCategory().getId()) + 1);
-        String portName = connectionRuleService.findBySourceCategory(product.getCategory().getId()).getPortName();
+        ConnectionRule rule = connectionRuleService.findBySourceCategory(product.getCategory().getId());
+        String portName = rule.getPortName();
         List<Port>ports = portService.findAllByProductId(product.getId());
         for (int i = 0; i < ports.size(); i++) {
             if(portName.equals(ports.get(i).getPortName())) continue;
@@ -54,7 +55,9 @@ public class PcBuild {
             emptySlots.put(ports.get(i).getPortName(), emptySlots.get(ports.get(i).getPortName()) + ports.get(i).getPortNum());
         }
 
-        if(emptySlots.containsKey(portName))emptySlots.put(portName, emptySlots.get(portName) - 1);
+        if(emptySlots.containsKey(portName) && categories.containsKey(rule.getTargetCategory().getId()) && categories.get(rule.getTargetCategory().getId()) > 0){
+            emptySlots.put(portName, emptySlots.get(portName) - 1);
+        }
         boolean valid = validator.isValid(this, product);
         removeComponent(product.getId());
         return valid;
@@ -65,7 +68,8 @@ public class PcBuild {
         categories.putIfAbsent(product.getCategory().getId(), 0);
         categories.put(product.getCategory().getId(), categories.get(product.getCategory().getId()) + 1);
         List<Port>ports = portService.findAllByProductId(product.getId());
-        String portName = connectionRuleService.findBySourceCategory(product.getCategory().getId()).getPortName();
+        ConnectionRule rule = connectionRuleService.findBySourceCategory(product.getCategory().getId());
+        String portName = rule.getPortName();
         for (int i = 0; i < ports.size(); i++) {
             if(portName.equals(ports.get(i).getPortName())) continue;
             emptySlots.putIfAbsent(ports.get(i).getPortName(), 0);
@@ -75,7 +79,9 @@ public class PcBuild {
         build.putIfAbsent(product.getId(), 0);
         lastAdded = product.getId();
         build.put(product.getId(), build.get(product.getId()) + 1);
-        if(emptySlots.containsKey(thisPort.getPortName()))emptySlots.put(thisPort.getPortName(), emptySlots.get(thisPort.getPortName()) - 1);
+        if(emptySlots.containsKey(portName) && categories.containsKey(rule.getTargetCategory().getId()) && categories.get(rule.getTargetCategory().getId()) > 0){
+            emptySlots.put(portName, emptySlots.get(portName) - 1);
+        }
         return this;
     }
 
@@ -84,15 +90,16 @@ public class PcBuild {
         categories.put(product.getCategory().getId(), categories.get(product.getCategory().getId()) - 1);
         build.put(id, build.get(id) - 1);
         List<Port>ports = portService.findAllByProductId(productService.findByIdEntity(id).getId());
-        String portName = connectionRuleService.findBySourceCategory(product.getCategory().getId()).getPortName();
+        ConnectionRule rule = connectionRuleService.findBySourceCategory(product.getCategory().getId());
+        String portName = rule.getPortName();
         for (int i = 0; i < ports.size(); i++) {
             if(portName.equals(ports.get(i).getPortName())) continue;
             emptySlots.putIfAbsent(ports.get(i).getPortName(), 0);
             emptySlots.put(ports.get(i).getPortName(), emptySlots.get(ports.get(i).getPortName()) - ports.get(i).getPortNum());
         }
 
-        if(emptySlots.containsKey(connectionRuleService.findBySourceCategory(product.getCategory().getId()).getPortName())) {
-            emptySlots.put(connectionRuleService.findBySourceCategory(product.getCategory().getId()).getPortName(), emptySlots.get(connectionRuleService.findBySourceCategory(product.getCategory().getId()).getPortName()) + 1);
+        if(emptySlots.containsKey(portName) && categories.containsKey(rule.getTargetCategory().getId()) && categories.get(rule.getTargetCategory().getId()) > 0){
+            emptySlots.put(portName, emptySlots.get(portName) - 1);
         }
     }
 
@@ -104,14 +111,17 @@ public class PcBuild {
         categories.put(categoryId, categories.get(categoryId) - 1);
         List<Port>ports = portService.findAllByProductId(productService.findByIdEntity(lastAdded).getId());
         Product product = productService.findByIdEntity(lastAdded);
-        String portName = connectionRuleService.findBySourceCategory(product.getCategory().getId()).getPortName();
+        ConnectionRule rule = connectionRuleService.findBySourceCategory(product.getCategory().getId());
+        String portName = rule.getPortName();
         for (int i = 0; i < ports.size(); i++) {
             if(portName.equals(ports.get(i).getPortName())) continue;
             emptySlots.putIfAbsent(ports.get(i).getPortName(), 0);
             emptySlots.put(ports.get(i).getPortName(), emptySlots.get(ports.get(i).getPortName()) - ports.get(i).getPortNum());
         }
 
-        if(emptySlots.containsKey(connectionRuleService.findBySourceCategory(lastAdded).getPortName()))emptySlots.put(connectionRuleService.findBySourceCategory(lastAdded).getPortName(), emptySlots.get(connectionRuleService.findBySourceCategory(lastAdded).getPortName()) + 1);
+        if(emptySlots.containsKey(portName) && categories.containsKey(rule.getTargetCategory().getId()) && categories.get(rule.getTargetCategory().getId()) > 0){
+            emptySlots.put(portName, emptySlots.get(portName) - 1);
+        }
     }
 
     public LinkedList<Product> get(){

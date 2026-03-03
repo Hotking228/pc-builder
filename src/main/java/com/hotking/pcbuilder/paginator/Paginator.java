@@ -7,8 +7,4 @@ public interface Paginator {
     default void paginate(Object result){
 
     }
-
-    default Integer size(){
-        return 0;
-    }
 }

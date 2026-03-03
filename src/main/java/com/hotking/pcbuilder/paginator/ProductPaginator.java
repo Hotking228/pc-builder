@@ -31,7 +31,6 @@ public class ProductPaginator implements Paginator{
         List<Product> origin = (List<Product>) result;
         List<Product> list = origin;
 
-
         list = list.stream()
                 .filter(pcBuild::validateComponent)
                 .filter(p -> p.getPrice() >= productPage.getMinPrice())
@@ -44,11 +43,14 @@ public class ProductPaginator implements Paginator{
                     }
                 })
                 .toList();
+
         size = list.size();
+
         list = list.stream()
                 .skip((long) productPage.getPageSize() * productPage.getPageNum())
                 .limit(productPage.getPageSize())
                 .toList();
+
         origin.clear();
         origin.addAll(list);
     }

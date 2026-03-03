@@ -13,5 +13,31 @@
                 <button type="submit">Добавить</button>
             </form><br>
         </div>
+
+        <div>
+            <form th:each="i : ${#numbers.sequence(0, pageCount, 1)}" th:action="@{'/builder/select/' + ${slug}}">
+                <input type="hidden" th:value="${i}" name="pageNumber">
+                <button type="submit" th:text="${i}">Номер страницы</button>
+            </form>
+        </div>
+
+        <div>
+            <form th:action="@{'/builder/select/' + ${slug}}" method="get" th:object="${page}">
+
+                <label for="minPrice"> Минимальная цена:
+                    <input name="minPrice" id="minPrice" th:value="*{minPrice}" type="text">
+                </label>
+
+                <label for="maxPrice">Максимальная цена:
+                    <input name="minPrice" id="maxPrice" th:value="*{maxPrice}" type="text">
+                </label><br>
+
+                <label for="manufacturer">Производитель:
+                    <input name="manufacturer" id="manufacturer" th:value="*{manufacturer}" type="text">
+                </label>
+
+                <button type="submit">Применить</button>
+            </form>
+        </div>
     </body>
 </html>

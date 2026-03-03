@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -19,11 +20,21 @@ import java.util.List;
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ProductPage {
 //TODO: в зависимости от категории можно добавить свои фильтры
-    private List<SortOrder> sortOrders;
-    private List<String> sortFields;
+    private List<SortOrder> sortOrders = new ArrayList<>();
+    private List<String> sortFields = new ArrayList<>();
     private Float minPrice;
     private Float maxPrice;
     private String manufacturer;
     private Integer pageSize;
     private Integer pageNum;
+
+    public void set(ProductPage page) {
+        sortOrders = page.getSortOrders();
+        sortFields = page.getSortFields();
+        minPrice = page.getMinPrice();
+        maxPrice = page.getMaxPrice();
+        manufacturer = page.getManufacturer();
+        pageSize = page.getPageSize();
+        pageNum = page.getPageNum();
+    }
 }
