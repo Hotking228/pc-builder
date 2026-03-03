@@ -1,6 +1,9 @@
 package com.hotking.pcbuilder.repository;
 
 import com.hotking.pcbuilder.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -17,5 +20,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "left join fetch p.specifications " +
             "where p.id = :id")
     public Optional<Product> findByIdWithAllDepends(Long id);
-
 }

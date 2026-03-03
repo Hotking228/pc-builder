@@ -13,3 +13,7 @@ spring:
         hbm2ddl.auto: validate
         jdbc:
           batch_size: 50
+pages:
+  default-sort-order: asc
+  default-page: 0
+  page-size: 2

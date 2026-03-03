@@ -8,6 +8,8 @@ import com.hotking.pcbuilder.service.PortService;
 import com.hotking.pcbuilder.service.ProductService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -15,6 +17,7 @@ import java.util.*;
 @Build
 @Component
 @RequiredArgsConstructor
+@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class PcBuild {
 
     //id продукта, количество комплектующего
