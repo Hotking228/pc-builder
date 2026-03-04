@@ -1,12 +1,12 @@
-package com.hotking.pcbuilder.convertors;
+package com.hotking.pcbuilder.parsers;
 
 import org.springframework.stereotype.Component;
 
 @Component
-public class VersionConvertor implements Convertor<String, String>{
+public class VersionParser implements Convertor<String, String>{
 
     @Override
-    public String convert(String object) {
+    public String parse(String object) {
         int l = 0;
         int r = 0;
         StringBuilder sb = new StringBuilder();

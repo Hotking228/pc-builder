@@ -9,8 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Builder
 @NoArgsConstructor
@@ -20,21 +19,29 @@ import java.util.List;
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ProductPage {
 //TODO: в зависимости от категории можно добавить свои фильтры
-    private List<SortOrder> sortOrders = new ArrayList<>();
-    private List<String> sortFields = new ArrayList<>();
+    private Map<String, SortOrder> sortOrders = new HashMap<>();
     private Float minPrice;
     private Float maxPrice;
-    private String manufacturer;
+    private Set<String> manufacturer = new HashSet<>();
     private Integer pageSize;
     private Integer pageNum;
 
     public void set(ProductPage page) {
-        sortOrders = page.getSortOrders();
-        sortFields = page.getSortFields();
+        if(page.getSortOrders() != null){
+            sortOrders = Map.copyOf(page.getSortOrders());
+        }
         minPrice = page.getMinPrice();
         maxPrice = page.getMaxPrice();
-        manufacturer = page.getManufacturer();
+        if(page.getManufacturer() != null){
+            page.getManufacturer().stream()
+                    .filter(man -> !man.isBlank())
+                    .forEach(manufacturer::add);
+        }
         pageSize = page.getPageSize();
         pageNum = page.getPageNum();
+    }
+
+    public boolean isEmpty() {
+        return maxPrice == null || pageSize == null || pageNum == null;
     }
 }

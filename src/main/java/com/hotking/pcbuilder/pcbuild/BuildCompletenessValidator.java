@@ -1,6 +1,6 @@
 package com.hotking.pcbuilder.pcbuild;
 
-import com.hotking.pcbuilder.convertors.VersionConvertor;
+import com.hotking.pcbuilder.parsers.VersionParser;
 import com.hotking.pcbuilder.entity.*;
 import com.hotking.pcbuilder.repository.port.PortRepository;
 import com.hotking.pcbuilder.service.CompatibilityRuleService;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class BuildCompletenessValidator implements ConstraintValidator<Build, PcBuild> {
 
     private final CompatibilityRuleService compatibilityService;
-    private final VersionConvertor convertor;
+    private final VersionParser convertor;
     private final ConnectionRuleService connectionRuleService;
     private final PortRepository portRepository;
 
@@ -93,8 +93,8 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
                                     return false;
                                 }
                             } catch (NumberFormatException e){
-                                if(Integer.parseInt(convertor.convert(product.getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue())) >=
-                                        Integer.parseInt(convertor.convert(products.get(i).getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
+                                if(Integer.parseInt(convertor.parse(product.getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue())) >=
+                                        Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
                                     return false;
                                 }
                             }
@@ -105,8 +105,8 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
                                     return false;
                                 }
                             } catch (NumberFormatException e){
-                                if(Integer.parseInt(convertor.convert(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()))>=
-                                        Integer.parseInt(convertor.convert(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
+                                if(Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()))>=
+                                        Integer.parseInt(convertor.parse(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
                                     return false;
                                 }
                             }
@@ -128,8 +128,8 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
                                     return false;
                                 }
                             } catch (NumberFormatException e){
-                                if(Integer.parseInt(convertor.convert(product.getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue())) <=
-                                        Integer.parseInt(convertor.convert(products.get(i).getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
+                                if(Integer.parseInt(convertor.parse(product.getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue())) <=
+                                        Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
                                     return false;
                                 }
                             }
@@ -140,8 +140,8 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
                                     return false;
                                 }
                             } catch (NumberFormatException e){
-                                if(Integer.parseInt(convertor.convert(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()))<=
-                                        Integer.parseInt(convertor.convert(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
+                                if(Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()))<=
+                                        Integer.parseInt(convertor.parse(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
                                     return false;
                                 }
                             }
@@ -156,8 +156,8 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
                                     return false;
                                 }
                             } catch (NumberFormatException e){
-                                if(Integer.parseInt(convertor.convert(product.getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue())) >
-                                        Integer.parseInt(convertor.convert(products.get(i).getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
+                                if(Integer.parseInt(convertor.parse(product.getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue())) >
+                                        Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
                                     return false;
                                 }
                             }
@@ -168,8 +168,8 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
                                     return false;
                                 }
                             } catch (NumberFormatException e){
-                                if(Integer.parseInt(convertor.convert(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()))>
-                                        Integer.parseInt(convertor.convert(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
+                                if(Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()))>
+                                        Integer.parseInt(convertor.parse(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
                                     return false;
                                 }
                             }
@@ -185,8 +185,8 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
                                     return false;
                                 }
                             } catch (NumberFormatException e){
-                                if(Integer.parseInt(convertor.convert(product.getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue())) <
-                                        Integer.parseInt(convertor.convert(products.get(i).getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
+                                if(Integer.parseInt(convertor.parse(product.getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue())) <
+                                        Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
                                     return false;
                                 }
                             }
@@ -197,8 +197,8 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
                                     return false;
                                 }
                             } catch (NumberFormatException e){
-                                if(Integer.parseInt(convertor.convert(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()))<
-                                        Integer.parseInt(convertor.convert(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
+                                if(Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()))<
+                                        Integer.parseInt(convertor.parse(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
                                     return false;
                                 }
                             }

@@ -7,6 +7,7 @@ import com.hotking.pcbuilder.mapper.FromCreateDtoToProductMapper;
 import com.hotking.pcbuilder.mapper.FromProductToReadDtoMapper;
 import com.hotking.pcbuilder.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -76,4 +77,7 @@ public class ProductService {
         return productRepository.findAllBySlug(slug);
     }
 
+    public List<String> findCompaniesBySlug(String slug) {
+        return productRepository.findCompaniesBySlug(slug);
+    }
 }

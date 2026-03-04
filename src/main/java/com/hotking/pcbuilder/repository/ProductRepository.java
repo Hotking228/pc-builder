@@ -1,6 +1,7 @@
 package com.hotking.pcbuilder.repository;
 
 import com.hotking.pcbuilder.entity.Product;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,4 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "left join fetch p.specifications " +
             "where p.id = :id")
     public Optional<Product> findByIdWithAllDepends(Long id);
+
+    @Query("select p.manufacturer from Product p join p.category c where c.slug = :slug")
+    List<String> findCompaniesBySlug(String slug);
 }

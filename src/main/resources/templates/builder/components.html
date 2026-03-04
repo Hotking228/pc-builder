@@ -15,27 +15,65 @@
         </div>
 
         <div>
-            <form th:each="i : ${#numbers.sequence(0, pageCount, 1)}" th:action="@{'/builder/select/' + ${slug}}">
-                <input type="hidden" th:value="${i}" name="pageNumber">
+            <form  th:action="@{'/builder/select/' + ${slug}}" method="post" th:object="${page}" th:each="i : ${#numbers.sequence(0, pageCount, 1)}">
+                <label for="hiddenMinPrice">
+                    <input name="minPrice" id="hiddenMinPrice" th:value="*{minPrice}" type="hidden">
+                </label>
+
+                <label for="hiddenMaxPrice">
+                    <input name="maxPrice" id="hiddenMaxPrice" th:value="*{maxPrice}" type="hidden">
+                </label>
+
+
+                <label for="hiddenManufacturer">
+                    <input type="hidden" name="manufacturer" id="hiddenManufacturer" th:value="*{manufacturer}">
+                </label>
+
+                
+                <input type="hidden" th:value="${i}" name="pageNum">
                 <button type="submit" th:text="${i}">Номер страницы</button>
             </form>
         </div>
 
         <div>
-            <form th:action="@{'/builder/select/' + ${slug}}" method="get" th:object="${page}">
+            <form th:action="@{'/builder/select/' + ${slug}}" method="post" th:object="${page}">
 
                 <label for="minPrice"> Минимальная цена:
                     <input name="minPrice" id="minPrice" th:value="*{minPrice}" type="text">
                 </label>
 
                 <label for="maxPrice">Максимальная цена:
-                    <input name="minPrice" id="maxPrice" th:value="*{maxPrice}" type="text">
+                    <input name="maxPrice" id="maxPrice" th:value="*{maxPrice}" type="text">
                 </label><br>
 
-                <label for="manufacturer">Производитель:
-                    <input name="manufacturer" id="manufacturer" th:value="*{manufacturer}" type="text">
-                </label>
 
+                <div th:each="company : ${companies}">
+                    <label>Производитель:
+                        <input type="checkbox"
+                               name="manufacturer"
+                               th:id="'manufacturer' + ${company}"
+                               th:value="${company}"
+                               th:text="${company}"
+                               th:checked="${#sets.contains(page.manufacturer, company)}">
+                    </label>
+                </div>
+
+                <div th:each="i : ${#numbers.sequence(0, #lists.size(possibleSortFields) - 1, 1)}">
+                    <label>
+                        <span th:text="${possibleSortFields.get(i)}">Название характеристики</span>
+                        <select th:id="${possibleSortFields.get(i)}" th:name="${possibleSortFields.get(i)}">
+                            <option th:each="order : ${sortOrder}"
+                                    th:text="${order}"
+                                    th:value="${order}"
+                                    th:selected="${#maps.containsKey(page.sortOrders, possibleSortFields.get(i)) and
+                                                   page.sortOrders.get(possibleSortFields.get(i)) == order}">
+
+                            </option>
+                        </select>
+                    </label>
+                </div>
+
+                <input type="hidden" th:value="0" name="pageNum">
                 <button type="submit">Применить</button>
             </form>
         </div>

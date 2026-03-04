@@ -36,10 +36,10 @@ public class ProductPaginator implements Paginator{
                 .filter(p -> p.getPrice() >= productPage.getMinPrice())
                 .filter(p -> p.getPrice() <= productPage.getMaxPrice())
                 .filter(p -> {
-                    if(productPage.getManufacturer() == null || productPage.getManufacturer().isEmpty() || productPage.getManufacturer().isBlank()){
+                    if(productPage.getManufacturer() == null || productPage.getManufacturer().isEmpty()){
                         return true;
                     } else {
-                        return p.getManufacturer().equals(productPage.getManufacturer());
+                        return productPage.getManufacturer().contains(p.getManufacturer());
                     }
                 })
                 .toList();
