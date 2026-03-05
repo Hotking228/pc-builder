@@ -20,8 +20,7 @@ public class ConnectionRuleService {
         return connectionRuleRepository.findAllBySourceTargetCategory(sourceId, targetId);
     }
 
-    public ConnectionRule findBySourceCategory(Long sourceId){
-        return Optional.ofNullable(connectionRuleRepository.findAllBySourceCategory(sourceId).get(0))
-                .orElseThrow();
+    public List<ConnectionRule> findBySourceCategory(Long sourceId){
+        return connectionRuleRepository.findAllBySourceCategory(sourceId);
     }
 }

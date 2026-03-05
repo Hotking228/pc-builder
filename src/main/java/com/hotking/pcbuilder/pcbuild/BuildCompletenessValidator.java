@@ -102,12 +102,12 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
                             }
                         } else { // обратное условие
                             try{
-                                if(Integer.parseInt(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()) >=
+                                if(Integer.parseInt(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()) <=
                                         Integer.parseInt(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue())){
                                     return false;
                                 }
                             } catch (NumberFormatException e){
-                                if(Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()))>=
+                                if(Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue())) <=
                                         Integer.parseInt(convertor.parse(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
                                     return false;
                                 }
@@ -137,12 +137,12 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
                             }
                         } else { // обратное условие
                             try{
-                                if(Integer.parseInt(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()) <=
+                                if(Integer.parseInt(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()) >=
                                         Integer.parseInt(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue())){
                                     return false;
                                 }
                             } catch (NumberFormatException e){
-                                if(Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()))<=
+                                if(Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue())) >=
                                         Integer.parseInt(convertor.parse(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
                                     return false;
                                 }
@@ -165,12 +165,12 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
                             }
                         } else { // обратное условие
                             try{
-                                if(Integer.parseInt(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()) >
+                                if(Integer.parseInt(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()) <
                                         Integer.parseInt(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue())){
                                     return false;
                                 }
                             } catch (NumberFormatException e){
-                                if(Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()))>
+                                if(Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue())) <
                                         Integer.parseInt(convertor.parse(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
                                     return false;
                                 }
@@ -194,15 +194,17 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
                             }
                         } else { // обратное условие
                             try{
-                                if(Integer.parseInt(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()) <
+                                if(Integer.parseInt(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()) >
                                         Integer.parseInt(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue())){
                                     return false;
                                 }
                             } catch (NumberFormatException e){
-                                if(Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue()))<
+                                if(Integer.parseInt(convertor.parse(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue())) >
                                         Integer.parseInt(convertor.parse(product.getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue()))){
                                     return false;
                                 }
+                            } catch (NullPointerException e) {
+                                throw new RuntimeException(e);
                             }
                         }
                         break;
@@ -215,7 +217,12 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
 
     private boolean lessThanMax(PcBuild build, Product product){
 
-        ConnectionRule rule = connectionRuleService.findBySourceCategory(product.getCategory().getId());
+        ConnectionRule rule;
+        try {
+            rule = connectionRuleService.findBySourceCategory(product.getCategory().getId()).get(0);
+        } catch (IndexOutOfBoundsException e) {
+            return true;
+        }
         if(build.containsCategory(rule.getTargetCategory().getId())){
             if(build.containsEmptySlots(rule.getPortName())){
                 return true;

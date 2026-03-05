@@ -53,8 +53,14 @@ public class PcBuild {
         categories.putIfAbsent(product.getCategory().getId(), 0);
         categories.put(product.getCategory().getId(), categories.get(product.getCategory().getId()) + 1);
         List<Port>ports = portService.findAllByProductId(product.getId());
-        ConnectionRule rule = connectionRuleService.findBySourceCategory(product.getCategory().getId());
-        String portName = rule.getPortName();
+        ConnectionRule rule;
+        String portName;
+        try {
+             rule = connectionRuleService.findBySourceCategory(product.getCategory().getId()).get(0);
+            portName = rule.getPortName();
+        } catch (IndexOutOfBoundsException e) {
+            portName = "";
+        }
         for (int i = 0; i < ports.size(); i++) {
             if(portName.equals(ports.get(i).getPortName())) {
                 emptySlots.put(portName, emptySlots.getOrDefault(portName, 0) - ports.get(i).getPortNum());
@@ -63,7 +69,6 @@ public class PcBuild {
             emptySlots.putIfAbsent(ports.get(i).getPortName(), 0);
             emptySlots.put(ports.get(i).getPortName(), emptySlots.get(ports.get(i).getPortName()) + ports.get(i).getPortNum());
         }
-        ConnectionRule thisPort = connectionRuleService.findBySourceCategory(product.getCategory().getId());
         build.putIfAbsent(product.getId(), 0);
         lastAdded = product.getId();
         build.put(product.getId(), build.get(product.getId()) + 1);
@@ -78,8 +83,14 @@ public class PcBuild {
         categories.put(product.getCategory().getId(), categories.get(product.getCategory().getId()) - 1);
         build.put(id, build.get(id) - 1);
         List<Port>ports = portService.findAllByProductId(productService.findByIdEntity(id).getId());
-        ConnectionRule rule = connectionRuleService.findBySourceCategory(product.getCategory().getId());
-        String portName = rule.getPortName();
+        ConnectionRule rule;
+        String portName;
+        try {
+            rule = connectionRuleService.findBySourceCategory(product.getCategory().getId()).get(0);
+            portName = rule.getPortName();
+        } catch (IndexOutOfBoundsException e) {
+            portName = "";
+        }
         for (int i = 0; i < ports.size(); i++) {
             if(portName.equals(ports.get(i).getPortName())) {
                 emptySlots.put(portName, emptySlots.getOrDefault(portName, 0) + ports.get(i).getPortNum());
@@ -102,8 +113,14 @@ public class PcBuild {
         categories.put(categoryId, categories.get(categoryId) - 1);
         List<Port>ports = portService.findAllByProductId(productService.findByIdEntity(lastAdded).getId());
         Product product = productService.findByIdEntity(lastAdded);
-        ConnectionRule rule = connectionRuleService.findBySourceCategory(product.getCategory().getId());
-        String portName = rule.getPortName();
+        ConnectionRule rule;
+        String portName;
+        try {
+            rule = connectionRuleService.findBySourceCategory(product.getCategory().getId()).get(0);
+            portName = rule.getPortName();
+        } catch (IndexOutOfBoundsException e) {
+            portName = "";
+        }
         for (int i = 0; i < ports.size(); i++) {
             if(portName.equals(ports.get(i).getPortName())) {
                 emptySlots.put(portName, emptySlots.getOrDefault(portName, 0) + ports.get(i).getPortNum());
