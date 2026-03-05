@@ -25,12 +25,12 @@ public class BuildValidAspect {
 
     @After(value = "addComponentCheck()")
     public void validationAfterAddComponent(JoinPoint joinPoint){
-        PcBuild build = (PcBuild) joinPoint.getTarget();
-
-        Set<ConstraintViolation<PcBuild>> violations = validator.validate(build);
-
-        if(!violations.isEmpty()) {
-            build.removeLastComponent();
-        }
+//        PcBuild build = (PcBuild) joinPoint.getTarget();
+//
+//        Set<ConstraintViolation<PcBuild>> violations = validator.validate(build);
+//
+//        if(!violations.isEmpty()) {
+//            build.removeLastComponent();
+//        }
     }
 }

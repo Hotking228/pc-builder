@@ -27,16 +27,12 @@ public class ProductPage {
     private Integer pageNum;
 
     public void set(ProductPage page) {
-        if(page.getSortOrders() != null){
+        if(page.getSortOrders() != null && !page.getSortOrders().isEmpty()){
             sortOrders = Map.copyOf(page.getSortOrders());
         }
         minPrice = page.getMinPrice();
         maxPrice = page.getMaxPrice();
-        if(page.getManufacturer() != null){
-            page.getManufacturer().stream()
-                    .filter(man -> !man.isBlank())
-                    .forEach(manufacturer::add);
-        }
+        manufacturer = page.getManufacturer();
         pageSize = page.getPageSize();
         pageNum = page.getPageNum();
     }

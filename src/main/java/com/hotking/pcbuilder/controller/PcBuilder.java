@@ -50,12 +50,13 @@ public class PcBuilder {
                                   @PathVariable("slug") String slug,
                                   @ModelAttribute("page") ProductPage page,
                                   @RequestParam(value = "pageNum", required = false) Integer pageNum,
-                                  @RequestParam(value = "manufacturer", required = false) String[] manufacturers,
                                   HttpServletRequest req){
 
-        //TODO: разобраться почему view кладет сюда такое значение
-        List<String> possibleSortFields = specificationService.findAllBySlugToSort(slug);
 
+
+
+        List<String> possibleSortFields = specificationService.findAllBySlugToSort(slug);
+        String[] manufacturers = req.getParameterValues("manufacturer");
         if(req.getParameter(possibleSortFields.get(0)) != null) {
             Map<String, SortOrder> sortOrders = new HashMap<>();
             for (int i = 0; i < possibleSortFields.size(); i++) {
@@ -64,7 +65,7 @@ public class PcBuilder {
 
             page.setSortOrders(sortOrders);
         }
-        if(manufacturers != null){
+        if(manufacturers != null && !manufacturers[0].isEmpty()){
 
             page.setManufacturer(Set.of(manufacturers));
         }

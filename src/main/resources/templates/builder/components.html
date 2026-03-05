@@ -16,20 +16,13 @@
 
         <div>
             <form  th:action="@{'/builder/select/' + ${slug}}" method="post" th:object="${page}" th:each="i : ${#numbers.sequence(0, pageCount, 1)}">
-                <label for="hiddenMinPrice">
-                    <input name="minPrice" id="hiddenMinPrice" th:value="*{minPrice}" type="hidden">
-                </label>
+                <input name="minPrice" id="hiddenMinPrice" th:value="*{minPrice}" type="hidden">
+                <input name="maxPrice" id="hiddenMaxPrice" th:value="*{maxPrice}" type="hidden">
 
-                <label for="hiddenMaxPrice">
-                    <input name="maxPrice" id="hiddenMaxPrice" th:value="*{maxPrice}" type="hidden">
-                </label>
-
-
-                <label for="hiddenManufacturer">
+                <div th:each="man : *{manufacturer}">
                     <input type="hidden" name="manufacturer" id="hiddenManufacturer" th:value="*{manufacturer}">
-                </label>
+                </div>
 
-                
                 <input type="hidden" th:value="${i}" name="pageNum">
                 <button type="submit" th:text="${i}">Номер страницы</button>
             </form>
@@ -66,7 +59,7 @@
                                     th:text="${order}"
                                     th:value="${order}"
                                     th:selected="${#maps.containsKey(page.sortOrders, possibleSortFields.get(i)) and
-                                                   page.sortOrders.get(possibleSortFields.get(i)) == order}">
+                                                   page.sortOrders.get(possibleSortFields.get(i)).name() == order.name()}">
 
                             </option>
                         </select>

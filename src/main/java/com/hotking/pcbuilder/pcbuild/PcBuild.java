@@ -42,22 +42,7 @@ public class PcBuild {
     }
 
     public boolean validateComponent(Product product){
-        build.putIfAbsent(product.getId(), 0);
-        build.put(product.getId(), build.get(product.getId()) + 1);
-        categories.putIfAbsent(product.getCategory().getId(), 0);
-        categories.put(product.getCategory().getId(), categories.get(product.getCategory().getId()) + 1);
-        ConnectionRule rule = connectionRuleService.findBySourceCategory(product.getCategory().getId());
-        String portName = rule.getPortName();
-        List<Port>ports = portService.findAllByProductId(product.getId());
-        for (int i = 0; i < ports.size(); i++) {
-            if(portName.equals(ports.get(i).getPortName())) continue;
-            emptySlots.putIfAbsent(ports.get(i).getPortName(), 0);
-            emptySlots.put(ports.get(i).getPortName(), emptySlots.get(ports.get(i).getPortName()) + ports.get(i).getPortNum());
-        }
-
-        if(emptySlots.containsKey(portName) && categories.containsKey(rule.getTargetCategory().getId()) && categories.get(rule.getTargetCategory().getId()) > 0){
-            emptySlots.put(portName, emptySlots.get(portName) - 1);
-        }
+        addComponent(product);
         boolean valid = validator.isValid(this, product);
         removeComponent(product.getId());
         return valid;
@@ -71,7 +56,10 @@ public class PcBuild {
         ConnectionRule rule = connectionRuleService.findBySourceCategory(product.getCategory().getId());
         String portName = rule.getPortName();
         for (int i = 0; i < ports.size(); i++) {
-            if(portName.equals(ports.get(i).getPortName())) continue;
+            if(portName.equals(ports.get(i).getPortName())) {
+                emptySlots.put(portName, emptySlots.getOrDefault(portName, 0) - ports.get(i).getPortNum());
+                continue;
+            }
             emptySlots.putIfAbsent(ports.get(i).getPortName(), 0);
             emptySlots.put(ports.get(i).getPortName(), emptySlots.get(ports.get(i).getPortName()) + ports.get(i).getPortNum());
         }
@@ -79,9 +67,9 @@ public class PcBuild {
         build.putIfAbsent(product.getId(), 0);
         lastAdded = product.getId();
         build.put(product.getId(), build.get(product.getId()) + 1);
-        if(emptySlots.containsKey(portName) && categories.containsKey(rule.getTargetCategory().getId()) && categories.get(rule.getTargetCategory().getId()) > 0){
-            emptySlots.put(portName, emptySlots.get(portName) - 1);
-        }
+//        if(emptySlots.containsKey(portName) && categories.containsKey(rule.getTargetCategory().getId()) && categories.get(rule.getTargetCategory().getId()) > 0){
+//            emptySlots.put(portName, emptySlots.get(portName) - 1);
+//        }
         return this;
     }
 
@@ -93,14 +81,17 @@ public class PcBuild {
         ConnectionRule rule = connectionRuleService.findBySourceCategory(product.getCategory().getId());
         String portName = rule.getPortName();
         for (int i = 0; i < ports.size(); i++) {
-            if(portName.equals(ports.get(i).getPortName())) continue;
+            if(portName.equals(ports.get(i).getPortName())) {
+                emptySlots.put(portName, emptySlots.getOrDefault(portName, 0) + ports.get(i).getPortNum());
+                continue;
+            }
             emptySlots.putIfAbsent(ports.get(i).getPortName(), 0);
             emptySlots.put(ports.get(i).getPortName(), emptySlots.get(ports.get(i).getPortName()) - ports.get(i).getPortNum());
         }
 
-        if(emptySlots.containsKey(portName) && categories.containsKey(rule.getTargetCategory().getId()) && categories.get(rule.getTargetCategory().getId()) > 0){
-            emptySlots.put(portName, emptySlots.get(portName) - 1);
-        }
+//        if(emptySlots.containsKey(portName) && categories.containsKey(rule.getTargetCategory().getId()) && categories.get(rule.getTargetCategory().getId()) > 0){
+//            emptySlots.put(portName, emptySlots.get(portName) + 1);
+//        }
     }
 
     public void removeLastComponent(){
@@ -114,14 +105,17 @@ public class PcBuild {
         ConnectionRule rule = connectionRuleService.findBySourceCategory(product.getCategory().getId());
         String portName = rule.getPortName();
         for (int i = 0; i < ports.size(); i++) {
-            if(portName.equals(ports.get(i).getPortName())) continue;
+            if(portName.equals(ports.get(i).getPortName())) {
+                emptySlots.put(portName, emptySlots.getOrDefault(portName, 0) + ports.get(i).getPortNum());
+                continue;
+            }
             emptySlots.putIfAbsent(ports.get(i).getPortName(), 0);
             emptySlots.put(ports.get(i).getPortName(), emptySlots.get(ports.get(i).getPortName()) - ports.get(i).getPortNum());
         }
 
-        if(emptySlots.containsKey(portName) && categories.containsKey(rule.getTargetCategory().getId()) && categories.get(rule.getTargetCategory().getId()) > 0){
-            emptySlots.put(portName, emptySlots.get(portName) - 1);
-        }
+//        if(emptySlots.containsKey(portName) && categories.containsKey(rule.getTargetCategory().getId()) && categories.get(rule.getTargetCategory().getId()) > 0){
+//            emptySlots.put(portName, emptySlots.get(portName) + 1);
+//        }
     }
 
     public LinkedList<Product> get(){

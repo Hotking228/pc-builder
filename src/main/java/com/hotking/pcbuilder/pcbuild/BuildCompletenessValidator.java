@@ -60,7 +60,8 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
                             List<String> p2Characteristics = Arrays.stream(products.get(i).getSpecifications().get(rules.get(j).getTargetSpecKey()).getSpecValue().split(", ")).toList();
                             boolean contains = false;
                             for (int k = 0; k < p2Characteristics.size(); k++) {
-                                if (p1Characteristics.contains(p2Characteristics.get(k))) {
+                                if (p1Characteristics.contains(p2Characteristics.get(k)) ||
+                                        (rules.get(j).getSourceCategory().getSlug().equals("cases") && rules.get(j).getTargetCategory().getSlug().equals("storage") && p2Characteristics.get(j).equals("M2"))) {
                                     contains = true;
                                 }
                             }
@@ -70,7 +71,8 @@ public class BuildCompletenessValidator implements ConstraintValidator<Build, Pc
                             List<String> p2Characteristics = Arrays.stream(products.get(i).getSpecifications().get(rules.get(j).getSourceSpecKey()).getSpecValue().split(", ")).toList();
                             boolean contains = false;
                             for (int k = 0; k < p2Characteristics.size(); k++) {
-                                if (p1Characteristics.contains(p2Characteristics.get(k))) {
+                                if (p1Characteristics.contains(p2Characteristics.get(k)) ||
+                                        (rules.get(j).getSourceCategory().getSlug().equals("storage") && rules.get(j).getTargetCategory().getSlug().equals("cases") && p2Characteristics.get(j).equals("M2"))) {
                                     contains = true;
                                 }
                             }
