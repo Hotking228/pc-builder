@@ -27,12 +27,8 @@ public class ProductService {
     private final FromProductToReadDtoMapper productReadDtoMapper;
 
     @Transactional
-    public Optional<ProductReadDto> create(ProductCreateEditDto product){
-        return Optional.ofNullable(
-                productReadDtoMapper.map(
-                        productRepository.saveAndFlush(productCreateMapper.map(product))
-                )
-        );
+    public void create(Product product){
+        productRepository.saveAndFlush(product);
     }
 
     @Transactional

@@ -1,6 +1,9 @@
 package com.hotking.pcbuilder.controller;
 
 import com.hotking.pcbuilder.config.Pages;
+import com.hotking.pcbuilder.dto.ProductCreateEditDto;
+import com.hotking.pcbuilder.entity.Product;
+import com.hotking.pcbuilder.entity.Specification;
 import com.hotking.pcbuilder.paginator.ProductPage;
 import com.hotking.pcbuilder.paginator.ProductPaginator;
 import com.hotking.pcbuilder.parsers.VersionParser;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpRequest;
 import java.util.*;
 
 @Controller
@@ -30,6 +34,40 @@ public class PcBuilder {
     private final ProductPaginator productPaginator;
     private final SpecificationService specificationService;
     private final VersionParser versionParser;
+
+    @GetMapping("/create/{slug}")
+    public String createProduct(Model model,
+                                @PathVariable("slug") String slug){
+        model.addAttribute("specs", specificationService.findAllBySlug(slug));
+        model.addAttribute("slug", slug);
+        return "/builder/createProduct";
+    }
+
+    @PostMapping("/create/{slug}")
+    public String createProduct(Model model,
+                                @PathVariable("slug") String slug,
+                                HttpServletRequest req){
+        Float price = Float.parseFloat(req.getParameter("price"));
+        String manufacturer = req.getParameter("manufacturer");
+        String name = req.getParameter("name");
+        String vendorCode = req.getParameter("vendorCode");
+        List<String[]> specs = specificationService.findAllBySlug(slug);
+        Map<String, Specification> map = new HashMap<>();
+        for (int i = 0; i < specs.size(); i++) {
+            map.put(specs.get(i)[0], Specification.builder()
+                            .specValue(specs.get(i)[1])
+                            .specKey(specs.get(i)[0])
+                    .build());
+        }
+        productService.create(Product.builder()
+                        .name(name)
+                        .manufacturer(manufacturer)
+                        .price(price)
+                        .vendorCode(vendorCode)
+                        .specifications(map)
+                    .build());
+        return "redirect:/builder/builder/%s".formatted(slug);
+    }
 
     @GetMapping
     public String showBuild(

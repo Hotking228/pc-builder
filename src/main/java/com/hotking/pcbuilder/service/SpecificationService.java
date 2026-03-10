@@ -1,6 +1,7 @@
 package com.hotking.pcbuilder.service;
 
 import com.hotking.pcbuilder.dto.SpecificationReadDto;
+import com.hotking.pcbuilder.entity.Specification;
 import com.hotking.pcbuilder.mapper.FromDtoToSpecMapper;
 import com.hotking.pcbuilder.mapper.FromSpecificationToReadDtoMapper;
 import com.hotking.pcbuilder.parsers.VersionParser;
@@ -80,5 +81,9 @@ public class SpecificationService {
                 })
                 .map(val->val[0])
                 .toList();
+    }
+
+    public List<String[]> findAllBySlug(String slug) {
+        return specificationRepository.findAllBySlug(slug);
     }
 }

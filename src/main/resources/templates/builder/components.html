@@ -69,6 +69,9 @@
                 <input type="hidden" th:value="0" name="pageNum">
                 <button type="submit">Применить</button>
             </form>
+            <form th:action="@{'/builder/create/' + ${slug}}" method="get">
+                <button type="submit">Создать новое комплектующее</button>
+            </form>
         </div>
     </body>
 </html>

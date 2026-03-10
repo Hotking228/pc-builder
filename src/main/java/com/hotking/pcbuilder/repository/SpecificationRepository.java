@@ -19,4 +19,5 @@ public interface SpecificationRepository extends JpaRepository<Specification, Lo
                 "ORDER BY p_s.spec_key",
             nativeQuery = true)
     List<String[]> findAllBySlug(String slug);
+
 }
