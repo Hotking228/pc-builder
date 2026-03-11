@@ -2,6 +2,7 @@ package com.hotking.pcbuilder.service;
 
 import com.hotking.pcbuilder.dto.ProductCreateEditDto;
 import com.hotking.pcbuilder.dto.ProductReadDto;
+import com.hotking.pcbuilder.entity.Port;
 import com.hotking.pcbuilder.entity.Product;
 import com.hotking.pcbuilder.entity.Specification;
 import com.hotking.pcbuilder.mapper.FromCreateDtoToProductMapper;
@@ -32,6 +33,9 @@ public class ProductService {
     public void create(Product product){
         for (Map.Entry<String, Specification> e : product.getSpecifications().entrySet()) {
             e.getValue().setProduct(product);
+        }
+        for (Port p : product.getPorts()) {
+            p.setProduct(product);
         }
         productRepository.saveAndFlush(product);
     }

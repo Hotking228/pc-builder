@@ -2,16 +2,16 @@ package com.hotking.pcbuilder.controller;
 
 import com.hotking.pcbuilder.config.Pages;
 import com.hotking.pcbuilder.dto.ProductCreateEditDto;
+import com.hotking.pcbuilder.entity.Port;
+import com.hotking.pcbuilder.entity.PossiblePort;
 import com.hotking.pcbuilder.entity.Product;
 import com.hotking.pcbuilder.entity.Specification;
 import com.hotking.pcbuilder.paginator.ProductPage;
 import com.hotking.pcbuilder.paginator.ProductPaginator;
 import com.hotking.pcbuilder.parsers.VersionParser;
-import com.hotking.pcbuilder.service.CategoryService;
-import com.hotking.pcbuilder.service.PortService;
-import com.hotking.pcbuilder.service.ProductService;
+import com.hotking.pcbuilder.repository.port.PossiblePortRepository;
+import com.hotking.pcbuilder.service.*;
 import com.hotking.pcbuilder.pcbuild.PcBuild;
-import com.hotking.pcbuilder.service.SpecificationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -34,13 +34,14 @@ public class PcBuilder {
     private final ProductPage productPage;
     private final ProductPaginator productPaginator;
     private final SpecificationService specificationService;
-    private final PortService portService;
+    private final PossiblePortService possiblePortService;
     private final VersionParser versionParser;
 
     @GetMapping("/create/{slug}")
     public String createProduct(Model model,
                                 @PathVariable("slug") String slug){
         model.addAttribute("specs", specificationService.findAllBySlug(slug));
+        model.addAttribute("ports", possiblePortService.findAllBySlug(slug));
         model.addAttribute("slug", slug);
         return "/builder/createProduct";
     }
@@ -61,7 +62,18 @@ public class PcBuilder {
                             .specKey(specs.get(i)[0])
                     .build());
         }
+        List<Port> ports = new ArrayList<>();
+        List<PossiblePort> possiblePorts = possiblePortService.findAllBySlug(slug);
+        for (int i = 0; i < possiblePorts.size(); i++) {
+            int portNum = Integer.parseInt(req.getParameter(possiblePorts.get(i).getPortName()));
+            if(portNum < 1)continue;
+            ports.add(Port.builder()
+                            .portName(possiblePorts.get(i).getPortName())
+                            .portNum(portNum)
+                    .build());
+        }
         productService.create(Product.builder()
+                        .ports(ports)
                         .name(name)
                         .manufacturer(manufacturer)
                         .price(price)

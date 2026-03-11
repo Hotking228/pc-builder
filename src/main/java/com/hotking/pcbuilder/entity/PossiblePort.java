@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class PossiblePorts {
+@Table(name = "possible_ports")
+public class PossiblePort {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +22,7 @@ public class PossiblePorts {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Column(nullable = false)
     private String portName;
 
     private String description;
