@@ -8,6 +8,7 @@ import com.hotking.pcbuilder.paginator.ProductPage;
 import com.hotking.pcbuilder.paginator.ProductPaginator;
 import com.hotking.pcbuilder.parsers.VersionParser;
 import com.hotking.pcbuilder.service.CategoryService;
+import com.hotking.pcbuilder.service.PortService;
 import com.hotking.pcbuilder.service.ProductService;
 import com.hotking.pcbuilder.pcbuild.PcBuild;
 import com.hotking.pcbuilder.service.SpecificationService;
@@ -33,6 +34,7 @@ public class PcBuilder {
     private final ProductPage productPage;
     private final ProductPaginator productPaginator;
     private final SpecificationService specificationService;
+    private final PortService portService;
     private final VersionParser versionParser;
 
     @GetMapping("/create/{slug}")
@@ -55,7 +57,7 @@ public class PcBuilder {
         Map<String, Specification> map = new HashMap<>();
         for (int i = 0; i < specs.size(); i++) {
             map.put(specs.get(i)[0], Specification.builder()
-                            .specValue(specs.get(i)[1])
+                            .specValue(req.getParameter(specs.get(i)[0]))
                             .specKey(specs.get(i)[0])
                     .build());
         }
@@ -65,8 +67,9 @@ public class PcBuilder {
                         .price(price)
                         .vendorCode(vendorCode)
                         .specifications(map)
+                        .category(categoryService.findBySlug(slug))
                     .build());
-        return "redirect:/builder/builder/%s".formatted(slug);
+        return "redirect:/builder/select/%s".formatted(slug);
     }
 
     @GetMapping

@@ -1,10 +1,7 @@
 package com.hotking.pcbuilder.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Builder
@@ -12,6 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Table(name = "port")
+@EqualsAndHashCode(exclude = {"product"})
+@ToString(exclude = {"product"})
 public class Port {
 
     @Id

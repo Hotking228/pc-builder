@@ -1,6 +1,7 @@
 package com.hotking.pcbuilder.service;
 
 import com.hotking.pcbuilder.dto.CategoryDto;
+import com.hotking.pcbuilder.entity.Category;
 import com.hotking.pcbuilder.mapper.FromCategoryToDtoMapper;
 import com.hotking.pcbuilder.mapper.FromDtoToCategoryMapper;
 import com.hotking.pcbuilder.repository.CategoryRepository;
@@ -59,5 +60,9 @@ public class CategoryService {
         if(entity.isEmpty()) return false;
         categoryRepository.deleteById(id);
         return true;
+    }
+
+    public Category findBySlug(String slug) {
+        return categoryRepository.findBySlug(slug);
     }
 }

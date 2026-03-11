@@ -28,14 +28,17 @@ public class Product {
 
     private Float price;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;
 
     private String manufacturer;
 
     //Ключ - ключ спецификации из таблицы Specification, значение - эта же спецификация
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @MapKey(name = "specKey")
     private Map<String, Specification> specifications;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Port> ports;
 }

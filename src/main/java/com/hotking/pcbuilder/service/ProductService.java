@@ -3,6 +3,7 @@ package com.hotking.pcbuilder.service;
 import com.hotking.pcbuilder.dto.ProductCreateEditDto;
 import com.hotking.pcbuilder.dto.ProductReadDto;
 import com.hotking.pcbuilder.entity.Product;
+import com.hotking.pcbuilder.entity.Specification;
 import com.hotking.pcbuilder.mapper.FromCreateDtoToProductMapper;
 import com.hotking.pcbuilder.mapper.FromProductToReadDtoMapper;
 import com.hotking.pcbuilder.repository.ProductRepository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -28,6 +30,9 @@ public class ProductService {
 
     @Transactional
     public void create(Product product){
+        for (Map.Entry<String, Specification> e : product.getSpecifications().entrySet()) {
+            e.getValue().setProduct(product);
+        }
         productRepository.saveAndFlush(product);
     }
 
