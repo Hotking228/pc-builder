@@ -3,6 +3,39 @@
     <head>
         <meta charset="UTF-8">
         <title>Builder</title>
+        <style>
+            body{
+                padding: 10px;
+                background-color: #9c9c9c;
+            }
+
+            .card{
+                margin: 5px;
+                border-radius: 10px;
+                background-color: #eaeaea;
+                height: 50px;
+                width: 400px;
+            }
+
+            .card a {
+                display: block;  /* Чтобы ссылка занимала весь блок */
+                height: 100%;
+                width: 100%;
+                line-height: 50px; /* Для вертикального центрирования */
+                text-decoration: none;
+                color: inherit;
+                border-radius: 10px;
+                padding-left: 20px;
+            }
+
+            .card a:hover{
+                box-shadow: inset 10px 0 0 #eab991;
+                transition: box-shadow 0.3s;
+
+                /*transition: border-left 0.3s, transform 0.2s;*/
+            }
+
+        </style>
     </head>
 
     <body>
@@ -15,8 +48,8 @@
         <br>
     </div>
         <br>
-        <div th:each="category : ${categories}">
-            <a th:href="@{'/builder/select/' + ${category.slug}}" th:text="|Добавить ${category.name}|">Добавить категорию</a>
+        <div th:each="category : ${categories}" class="card">
+            <a th:href="@{'/builder/select/' + ${category.slug}}" th:text="|${category.name}|">Добавить категорию</a>
         </div>
     </body>
 </html>
