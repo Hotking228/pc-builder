@@ -3,67 +3,186 @@
     <head>
         <meta charset="UTF-8">
         <title>Components</title>
+        <style>
+            body{
+                padding: 10px;
+                background-color: #9c9c9c;
+            }
+
+            .card{
+                margin: 5px;
+                border-radius: 10px;
+                background-color: #eaeaea;
+                height: 50px;
+                width: 500px;
+                display: flex;/* Для расположения кнопки справа */
+                align-items: center;/* Выравниваем по вертикали */
+                justify-content: space-between;/* Распределяем пространство между объектами */
+                padding-right: 10px;/* Отступ для кнопки */
+            }
+
+            .card a {
+                display: block;  /* Чтобы ссылка занимала весь блок */
+                height: 100%;
+                width: 100%;
+                line-height: 50px; /* Для вертикального центрирования */
+                text-decoration: none;
+                color: inherit;
+                border-radius: 10px;
+                padding-left: 20px;
+            }
+
+            .card a:hover{
+                box-shadow: inset 10px 0 0 #eab991;
+                transition: box-shadow 0.3s;
+
+                /*transition: border-left 0.3s, transform 0.2s;*/
+            }
+
+            .add-button{
+                border-radius: 5px;
+                width: 100px;
+                height: 24px;
+            }
+
+            .page-button-container{
+                display: flex;
+                flex-wrap: wrap;/* Перенос на новую строку */
+                gap: 10px;/* Расстояние между объектами */
+                max-width: 100%;
+
+                margin: 5px;
+                border-radius: 10px;
+                background-color: #eaeaea;
+                /*height: 120px;*/
+                width: 500px;
+                padding-left: 20px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+
+            .page-button{
+                border-radius: 5px;
+                width: 24px;
+                height: 24px;
+            }
+
+            .spec-card{
+                margin: 5px;
+                border-radius: 10px;
+                background-color: #eaeaea;
+                /*height: 120px;*/
+                width: 500px;
+                padding-left: 20px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+
+            .input-price{
+                margin-bottom: 10px;
+                width: 100%;
+                border: none;
+                outline: none;
+                background: transparent;
+
+                font-size: 14px;
+                color: #221b1b;
+
+                padding: 10px;
+            }
+
+            .input-price:hover{
+                box-shadow: inset 3px 0 0 #eab991;
+                border-radius: 5px;
+                transition: box-shadow 0.3s;
+            }
+
+            .input-price:focus{
+                box-shadow: inset 3px 0 0 #ea9f5a;
+                padding-left: 5px;
+                border-radius: 5px;
+                transition: box-shadow 0.1s;
+            }
+
+            .line{
+                width: 100%;
+                border-bottom: 2px solid #eae1c8;
+            }
+
+
+        </style>
     </head>
 
     <body>
-        <div th:each="component : ${components}">
+        <div th:each="component : ${components}" class="card">
             <a th:href="@{'/builder/component/' + ${component.id}}" th:text="${component.name}"></a>
             <form action="/builder" method="post">
                 <input type="hidden" th:value="${component.id}" name="component">
-                <button type="submit">Добавить</button>
+                <button type="submit" class="add-button">Добавить</button>
             </form><br>
         </div>
+        <div class="line"></div>
 
         <div>
-            <form  th:action="@{'/builder/select/' + ${slug}}" method="post" th:object="${page}" th:each="i : ${#numbers.sequence(0, pageCount, 1)}">
-                <input name="minPrice" id="hiddenMinPrice" th:value="*{minPrice}" type="hidden">
-                <input name="maxPrice" id="hiddenMaxPrice" th:value="*{maxPrice}" type="hidden">
+            <div class="page-button-container">
+                <form th:action="@{'/builder/select/' + ${slug}}"
+                      method="post"
+                      th:object="${page}"
+                      th:each="i : ${#numbers.sequence(0, pageCount, 1)}">
 
-                <div th:each="man : *{manufacturer}">
-                    <input type="hidden" name="manufacturer" id="hiddenManufacturer" th:value="*{manufacturer}">
+                    <input name="minPrice" id="hiddenMinPrice" th:value="*{minPrice}" type="hidden">
+                    <input name="maxPrice" id="hiddenMaxPrice" th:value="*{maxPrice}" type="hidden">
+
+                    <div th:each="man : *{manufacturer}">
+                        <input type="hidden" name="manufacturer" id="hiddenManufacturer" th:value="*{manufacturer}">
+                    </div>
+
+                    <input type="hidden" th:value="${i}" name="pageNum">
+                    <button type="submit" th:text="${i}" class="page-button">Номер страницы</button>
+                </form>
+            </div>
+            <form th:action="@{'/builder/select/' + ${slug}}"
+                  method="post" th:object="${page}">
+
+                <div class="spec-card">
+                    <label for="minPrice"> Минимальная цена:
+                        <input name="minPrice" id="minPrice" th:value="*{minPrice}" type="text" class="input-price">
+                    </label><br>
+
+                    <label for="maxPrice">Максимальная цена:
+                        <input name="maxPrice" id="maxPrice" th:value="*{maxPrice}" type="text" class="input-price">
+                    </label><br>
                 </div>
 
-                <input type="hidden" th:value="${i}" name="pageNum">
-                <button type="submit" th:text="${i}">Номер страницы</button>
-            </form>
-        </div>
 
-        <div>
-            <form th:action="@{'/builder/select/' + ${slug}}" method="post" th:object="${page}">
-
-                <label for="minPrice"> Минимальная цена:
-                    <input name="minPrice" id="minPrice" th:value="*{minPrice}" type="text">
-                </label>
-
-                <label for="maxPrice">Максимальная цена:
-                    <input name="maxPrice" id="maxPrice" th:value="*{maxPrice}" type="text">
-                </label><br>
-
-
-                <div th:each="company : ${companies}">
-                    <label>Производитель:
-                        <input type="checkbox"
-                               name="manufacturer"
-                               th:id="'manufacturer' + ${company}"
-                               th:value="${company}"
-                               th:text="${company}"
-                               th:checked="${#sets.contains(page.manufacturer, company)}">
-                    </label>
+                <div class="spec-card">
+                    <div th:each="company : ${companies}">
+                        <label>Производитель:
+                            <input type="checkbox"
+                                   name="manufacturer"
+                                   th:id="'manufacturer' + ${company}"
+                                   th:value="${company}"
+                                   th:text="${company}"
+                                   th:checked="${#sets.contains(page.manufacturer, company)}">
+                        </label>
+                    </div>
                 </div>
 
-                <div th:each="i : ${#numbers.sequence(0, #lists.size(possibleSortFields) - 1, 1)}">
-                    <label>
-                        <span th:text="${possibleSortFields.get(i)}">Название характеристики</span>
-                        <select th:id="${possibleSortFields.get(i)}" th:name="${possibleSortFields.get(i)}">
-                            <option th:each="order : ${sortOrder}"
-                                    th:text="${order}"
-                                    th:value="${order}"
-                                    th:selected="${#maps.containsKey(page.sortOrders, possibleSortFields.get(i)) and
-                                                   page.sortOrders.get(possibleSortFields.get(i)).name() == order.name()}">
+                <div class="spec-card">
+                    <div th:each="i : ${#numbers.sequence(0, #lists.size(possibleSortFields) - 1, 1)}">
+                        <label>
+                            <span th:text="${possibleSortFields.get(i)}">Название характеристики</span>
+                            <select th:id="${possibleSortFields.get(i)}" th:name="${possibleSortFields.get(i)}">
+                                <option th:each="order : ${sortOrder}"
+                                        th:text="${order}"
+                                        th:value="${order}"
+                                        th:selected="${#maps.containsKey(page.sortOrders, possibleSortFields.get(i)) and
+                                                       page.sortOrders.get(possibleSortFields.get(i)).name() == order.name()}">
 
-                            </option>
-                        </select>
-                    </label>
+                                </option>
+                            </select>
+                        </label>
+                    </div>
                 </div>
 
                 <input type="hidden" th:value="0" name="pageNum">
@@ -73,5 +192,6 @@
                 <button type="submit">Создать новое комплектующее</button>
             </form>
         </div>
+
     </body>
 </html>
