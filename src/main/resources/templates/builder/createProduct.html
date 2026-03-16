@@ -3,41 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <title>CreateProduct</title>
+    <style>
+        body{
+            padding: 10px;
+            background-color: #9c9c9c;
+        }
+
+        .card{
+            margin: 5px;
+            border-radius: 10px;
+            background-color: #eaeaea;
+            /*height: 120px;*/
+            width: 500px;
+            padding-left: 20px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .add-button{
+            border-radius: 5px;
+            /*width: 100px;*/
+            height: 24px;
+        }
+
+        .input-price{
+            margin-bottom: 10px;
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+
+            font-size: 14px;
+            color: #221b1b;
+
+            padding: 10px;
+        }
+
+        .input-price:hover{
+            box-shadow: inset 3px 0 0 #eab991;
+            border-radius: 5px;
+            transition: box-shadow 0.3s;
+        }
+
+        .input-price:focus{
+            box-shadow: inset 3px 0 0 #ea9f5a;
+            padding-left: 5px;
+            border-radius: 5px;
+            transition: box-shadow 0.1s;
+        }
+    </style>
 </head>
     <body>
     <form th:action="@{'/builder/create/' + ${slug}}" method="post">
-
-        <label for="name">Название:
-            <input id="name" name="name" type="text">
-        </label><br>
-
-        <label for="price">Цена:
-            <input id="price" name="price" type="text">
-        </label><br>
-
-        <label for="manufacturer">Производитель:
-            <input id="manufacturer" name="manufacturer" type="text">
-        </label><br>
-
-        <label for="vendorCode">Вендор код:
-            <input id="vendorCode" name="vendorCode" type="text">
-        </label><br>
-
-        <div th:each="spec : ${specs}">
-            <span th:text="${spec[0]}">Название комплектующей</span>
-            <label th:for="${spec[0]}">
-                <input type="text" th:id="${spec[0]}" th:name="${spec[0]}">
-            </label>
+        <div class="card">
+            <label for="name">Название:
+                <input id="name" name="name" type="text" class="input-price">
+            </label><br>
         </div>
 
-        <div th:each="port : ${ports}">
-            <span th:text="${port.portName} + ', количество:'">Название порта</span>
-                <label th:for="${port.portName}">
-                    <input type="text" th:name="${port.portName}" th:id="${port.portName}">
+        <div class="card">
+            <label for="price">Цена:
+                <input id="price" name="price" type="text" class="input-price">
+            </label><br>
+
+            <label for="manufacturer">Производитель:
+                <input id="manufacturer" name="manufacturer" type="text" class="input-price">
+            </label><br>
+
+            <label for="vendorCode">Вендор код:
+                <input id="vendorCode" name="vendorCode" type="text" class="input-price">
+            </label><br>
+        </div>
+
+        <div class="card">
+            <div th:each="spec : ${specs}">
+                <span th:text="${spec[0]}">Название комплектующей</span>
+                <label th:for="${spec[0]}">
+                    <input type="text" th:id="${spec[0]}" th:name="${spec[0]}" class="input-price">
                 </label>
+            </div>
         </div>
 
-        <button type="submit">Подтвердить</button>
+        <div class="card">
+            <div th:each="port : ${ports}">
+                <span th:text="${port.portName} + ', количество:'">Название порта</span>
+                    <label th:for="${port.portName}">
+                        <input type="text" th:name="${port.portName}" th:id="${port.portName}" class="input-price">
+                    </label>
+            </div>
+        </div>
+
+        <div class="card">
+            <button type="submit" class="add-button">Подтвердить</button>
+        </div>
     </form>
 
     </body>

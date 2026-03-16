@@ -41,7 +41,7 @@
 
             .add-button{
                 border-radius: 5px;
-                width: 100px;
+                /*width: 100px;*/
                 height: 24px;
             }
 
@@ -155,9 +155,9 @@
                 </div>
 
 
-                <div class="spec-card">
+                <div class="spec-card">Производитель:
                     <div th:each="company : ${companies}">
-                        <label>Производитель:
+                        <label>
                             <input type="checkbox"
                                    name="manufacturer"
                                    th:id="'manufacturer' + ${company}"
@@ -186,10 +186,14 @@
                 </div>
 
                 <input type="hidden" th:value="0" name="pageNum">
-                <button type="submit">Применить</button>
+                <div class="spec-card">
+                    <button type="submit" class="add-button">Применить</button>
+                </div>
             </form>
             <form th:action="@{'/builder/create/' + ${slug}}" method="get">
-                <button type="submit">Создать новое комплектующее</button>
+                <div class="spec-card">
+                    <button type="submit" class="add-button">Создать новое комплектующее</button>
+                </div>
             </form>
         </div>
 

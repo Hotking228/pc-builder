@@ -3,15 +3,38 @@
     <head>
         <meta charset="UTF-8">
         <title>Component</title>
+        <style>
+            body{
+                padding: 10px;
+                background-color: #9c9c9c;
+            }
+
+            .card{
+                margin: 5px;
+                border-radius: 10px;
+                background-color: #eaeaea;
+                /*height: 120px;*/
+                width: 500px;
+                padding-left: 20px;
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+        </style>
     </head>
 
     <body>
-        <div th:text="${component.getName()}">Название компонента</div><br>
-        <div th:text="${component.getManufacturer()}">Производитель</div><br>
-        <div th:text="${component.getPrice()}">Цена</div><br>
-        <div th:text="|${component.getCategory().getName()} ${component.getCategory().getSlug()}|">Название категории</div><br>
-        <div th:text="${component.getCategory().getDescription()}">Описание</div><br>
-        Характеристики:<br>
-        <div th:each="spec : ${component.getSpecifications()}" th:text="|${spec.getSpecKey()}: ${spec.getSpecValue()}|">Характеристика</div><br>
+        <div th:text="${component.getName()}" class="card">Название компонента</div><br>
+        <div class="card">
+            <div th:text="${component.getManufacturer()}">Производитель</div><br>
+            <div th:text="${component.getPrice()}">Цена</div><br>
+            <div th:text="|${component.getCategory().getName()} ${component.getCategory().getSlug()}|">Название категории</div><br>
+        </div>
+        <div class="card">
+            <div th:text="${component.getCategory().getDescription()}">Описание</div><br>
+        </div>
+        <div class="card">
+            Характеристики:<br>
+            <div th:each="spec : ${component.getSpecifications()}" th:text="|${spec.getSpecKey()}: ${spec.getSpecValue()}|">Характеристика</div><br>
+        </div>
     </body>
 </html>
