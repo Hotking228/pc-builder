@@ -358,7 +358,7 @@ public class AppConfig {
 
 ![build.png](images/build.png)
 
-При попытке добавить еще 1 в url вы можете видеть slug, что пытаюсь реально добавить
+При попытке добавить еще 1. В url вы можете видеть slug, что пытаюсь реально добавить
 еще 1 ЦП:
 
 ![one_mor_cpu.png](images/one_mor_cpu.png)
