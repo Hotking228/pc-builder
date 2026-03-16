@@ -49,8 +49,6 @@ public class ProductPaginator implements Paginator{
 
         origin.clear();
         origin.addAll(list);
-
-
     }
 
     private List<Product> filter(List<Product> list){
